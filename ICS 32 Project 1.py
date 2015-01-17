@@ -1,6 +1,5 @@
 # ICS 32 Project #1: Begin the Begin
 
-
 '''Program that takes in 3 lines of input: (1) directory, (2) search characteristic,
 (3) action to perform on file. Uses recursion to look for files in subdirectories and 
 filters files by specific criteria'''
@@ -53,7 +52,7 @@ def search_parameters(path: str)->list:
     os.chdir(path)
     lst = os.listdir(path)
     start_list = path_list(lst)
-    result, value, new_list = [], '', []
+    value, new_list, result = '', [], []
 
     while True:
         try: 
@@ -67,21 +66,18 @@ def search_parameters(path: str)->list:
         master = master_list(start_list, result)
 
         if search_type == 'N' and length >= 2: 
-            lst2 = search_name(names, master, new_list)
-            return new_list 
+            return search_name(names, master, new_list)
         elif search_type == 'E' and length == 2:
-            lst2 = search_extension(value, master, new_list)
-            return new_list 
+            return search_extension(value, master, new_list) 
         elif search_type == 'S' and length == 2:
             if is_num(value): 
-                lst2 = search_size(int(value), master, new_list)
-                return lst2
+                return search_size(int(value), new_list)
             print('ERROR')
         else:
             print('ERROR')
 
 
-def add_change(item: 'str', result: list)->None:
+def add_change(item: str, result: list)->None:
     '''Changes the directory, add file paths to list of paths, and changes back to
     parent directory'''
    
@@ -135,15 +131,12 @@ def search_extension(ending: str, result: list, new_list: list)->list:
     return new_list
 
 
-def search_size(size: int, result: list, new_list)->list:
+def search_size(size: int, new_list: list)->list:
     '''Searches if files' sizes are greater than size specified; returns list of matching
     files; else prints ERROR'''
-
-    for item in result:
-        basename = os.path.basename(item)
         
-        if os.path.getsize(item) > size:
-            new_list.append(item)
+    if os.path.getsize(item) > size:
+        new_list.append(item)
     return new_list
 
 
@@ -178,7 +171,7 @@ def template(result: list, f: 'function'):
         f(i)
 
 
-def perform_action(path: str, result: list):
+def perform_action(result: list):
     '''Get third line of input and performs specified action, else prints ERROR'''
 
     while True:
@@ -207,7 +200,7 @@ def main():
 
     path = str(check_directory())
     result = search_parameters(path)
-    perform_action(path, result) 
+    perform_action(result) 
 
     
 if __name__ == '__main__':
