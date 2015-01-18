@@ -1,8 +1,8 @@
-# ICS 32 Project #1: Begin the Begin
+# ICS 32 Project #1
 
-'''Program that takes in 3 lines of input: (1) directory, (2) search characteristic,
+'''Program that takes in 3 lines of input: (1) directory path, (2) search characteristic,
 (3) action to perform on file. Uses recursion to look for files in subdirectories and 
-filters files by specific criteria'''
+filters files by specific criteria.'''
 
 
 import os
@@ -11,7 +11,7 @@ import shutil
 
 
 def check_directory()->pathlib.Path:
-    '''Get first line of input and checks if directory path is valid; returns path
+    '''Get first line of input and checks if directory path is valid; returns path,
     else prints ERROR'''
 
     while True: 
@@ -36,7 +36,7 @@ def path_list(lst: list)->list:
 
 
 def is_num(value: str)->bool:
-    '''Returns True if string can be converted to number, return False otherwise'''
+    '''Returns True if string can be converted to integer, return False otherwise'''
 
     try:
         value = int(value)
@@ -47,7 +47,7 @@ def is_num(value: str)->bool:
 
 def search_parameters(path: str)->list:
     '''Get second line of input and performs specified search; returns list of paths
-    with characteristics; else prints ERROR'''
+    with specified characteristic; else prints ERROR'''
 
     os.chdir(path)
     lst = os.listdir(path)
@@ -89,7 +89,8 @@ def add_change(item: str, result: list)->None:
 
 
 def master_list(start_list: list, result: list)->list:
-    '''Performs recursion to return a master list of files in a given directory'''
+    '''Performs recursion to return a master list of files in a given directory, 
+    including files in subdirectories'''
 
     if start_list == []:
         return result
@@ -108,7 +109,7 @@ def master_list(start_list: list, result: list)->list:
 
 def search_name(name_list: list, result: list, new_list: list)->list:
     '''Searches if files match those in the name list; return list of matching files;
-    else prints ERROR'''
+    else returns empty list'''
 
     for item in result:
         basename = os.path.basename(item)
@@ -121,7 +122,7 @@ def search_name(name_list: list, result: list, new_list: list)->list:
 
 def search_extension(ending: str, result: list, new_list: list)->list:
     '''Searches if files match extension specified; returns list of matching files;
-    else prints ERROR'''
+    else returns empty list'''
 
     for item in result:
         basename = os.path.basename(item)
@@ -133,7 +134,7 @@ def search_extension(ending: str, result: list, new_list: list)->list:
 
 def search_size(size: int, new_list: list)->list:
     '''Searches if files' sizes are greater than size specified; returns list of matching
-    files; else prints ERROR'''
+    files; else returns empty list'''
         
     if os.path.getsize(item) > size:
         new_list.append(item)
@@ -152,7 +153,7 @@ def open_file(filename: str):
 
 
 def copy_file(filename: str):
-    '''Copies the file and creates a new file with same name and added .dup extension'''
+    '''Copies the file and creates a new file with same name and adds .dup extension'''
 
     shutil.copyfile(filename, filename + '.dup')
 
@@ -164,7 +165,8 @@ def touch_file(filename: str):
 
 
 def template(result: list, f: 'function'):
-    '''Template function that prints each item in list, and calls the action on the item'''
+    '''Template function that prints each item in list, and performs specified action 
+    on each item'''
 
     for i in result:
         print(i)
@@ -196,7 +198,7 @@ def perform_action(result: list):
 
     
 def main():
-    '''Execute function to search and perform file manipulation'''
+    '''Execute function to search and perform specified action / file manipulation'''
 
     path = str(check_directory())
     result = search_parameters(path)
